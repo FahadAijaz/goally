@@ -7,13 +7,13 @@ import {
     Post,
     UseInterceptors,
     UsePipes,
-    ValidationPipe
+    ValidationPipe, UploadedFile
 } from '@nestjs/common';
 
 import {BehaviourService} from "./behaviour.service";
 import {CreateBehaviourDto} from "./dto/createBehaviourDto";
-import {Behaviour} from "../schemas/behaviour.schema";
-import {serialize} from "class-transformer";
+import {FileInterceptor} from "@nestjs/platform-express";
+
 
 @Controller('behaviours')
 export class BehaviourController {
@@ -24,30 +24,30 @@ export class BehaviourController {
     @UsePipes(ValidationPipe)
     @UseInterceptors(ClassSerializerInterceptor)
     async createBehaviour(@Body() createBehaviourDto: CreateBehaviourDto) {
-        await this.behaviourService.createBehaviour(createBehaviourDto)
-        return createBehaviourDto;
+        let behaviour = await this.behaviourService.createBehaviour(createBehaviourDto);
+        return behaviour;
     }
+
     @Get()
-    async getBehaviours(@Query() { from, limit, schedule= 'TODAY' }): Promise<CreateBehaviourDto[]> {
-        const behaviours = await this.behaviourService.getBehaviours(from, limit, schedule);
-        let bDtos: CreateBehaviourDto[] = []
-        for (let b of behaviours) {
-            let bDto = new CreateBehaviourDto();
-            bDto.datetime = b.dateTime;
-            bDto.name = b.name;
-            bDto.imageURL = b.imageURL;
-            bDto.ratingPoints = b.ratingPoints;
-            bDto.rating = b.rating;
-            bDtos.push(bDto);
-        }
-        return bDtos;
+    async getBehaviours(@Query() {page, from, limit, schedule = 'TODAY'}) {
+        const behaviours = await this.behaviourService.getBehaviours({page, from, limit, schedule});
+        return behaviours;
     }
+
     @Delete(':id')
-    async deleteBehaviour(@Param('id') behaviourId: string){
+    async deleteBehaviour(@Param('id') behaviourId: string) {
         await this.behaviourService.deleteBehaviour(behaviourId)
     }
+
     @Patch(':id')
-    async updateBehaviour(@Param('id') behaviourId: string, @Body() behaviourDto: CreateBehaviourDto){
+    async updateBehaviour(@Param('id') behaviourId: string, @Body() behaviourDto: CreateBehaviourDto) {
         await this.behaviourService.updateBehaviour(behaviourId, behaviourDto)
+    }
+
+    @Post(':id/image')
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadFile(@Param('id') behaviourId: string, @UploadedFile() file: Express.Multer.File) {
+        const imageUrl = await this.behaviourService.uploadImage(behaviourId, file);
+        return {imageURL: imageUrl}
     }
 }

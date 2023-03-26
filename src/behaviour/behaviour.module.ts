@@ -6,6 +6,7 @@ import {Behaviour, BehaviourSchema} from "../schemas/behaviour.schema";
 import {PagerMiddleware} from "../common/middleware/pager.middleware";
 import {CommonModule} from "../common/common.module";
 
+
 @Module({
   imports: [MongooseModule.forFeature([{ name: Behaviour.name, schema: BehaviourSchema }]), CommonModule],
   controllers: [BehaviourController],
