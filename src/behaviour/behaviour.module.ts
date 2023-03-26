@@ -3,7 +3,7 @@ import { BehaviourController } from './behaviour.controller';
 import { BehaviourService } from './behaviour.service';
 import {MongooseModule} from "@nestjs/mongoose";
 import {Behaviour, BehaviourSchema} from "../schemas/behaviour.schema";
-import {PagerMiddleware} from "../common/pager/pager.middleware";
+import {PagerMiddleware} from "../common/middleware/pager.middleware";
 import {CommonModule} from "../common/common.module";
 
 @Module({

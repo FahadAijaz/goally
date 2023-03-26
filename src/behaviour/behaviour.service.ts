@@ -3,7 +3,7 @@ import {Model} from "mongoose";
 import {InjectModel} from "@nestjs/mongoose";
 import {Behaviour, BehaviourDocument} from "../schemas/behaviour.schema";
 import {CreateBehaviourDto, BehaviourRating} from "./dto/createBehaviourDto";
-import moment from "moment";
+import * as moment from "moment";
 
 
 @Injectable()
@@ -24,19 +24,11 @@ export class BehaviourService {
     }
 
     getBehaviours = async (from: number, limit: number, schedule: string) => {
-        let startTime, endTime
-        if (schedule == "TODAY") {
-            startTime = new Date();
-            startTime.setUTCHours(0, 0, 0, 0);
-
-        } else if (schedule == "WEEK") {
-            startTime = moment().subtract(1, 'weeks');
-        } else if (schedule == "MONTH") {
-            startTime = moment().subtract(1, 'month');
-        }
-        endTime = new Date();
-        return this.behaviourModel.find({dateTime: {$lte: startTime, $gte: endTime}})
-            .skip(from).limit(limit).lean()
+        let startTime = this.getStartDateForSchedule(schedule);
+        return this.behaviourModel.find({dateTime: {$gte: startTime}})
+            .skip(from).limit(limit)
+            .sort({dateTime: 1})
+            .lean()
     }
 
     async deleteBehaviour(behaviourId: string) {
@@ -45,5 +37,17 @@ export class BehaviourService {
 
     async updateBehaviour(behaviourId: string, behaviour: CreateBehaviourDto) {
         return this.behaviourModel.updateOne({_id: behaviourId}, {...behaviour})
+    }
+
+    private getStartDateForSchedule(schedule: string) {
+        let startTime = new Date();
+        if (schedule == "TODAY") {
+            startTime.setUTCHours(0, 0, 0, 0);
+        } else if (schedule == "WEEK") {
+            startTime = moment(startTime).subtract(1, 'weeks').toDate();
+        } else if (schedule == "MONTH") {
+            startTime = moment(startTime).subtract(1, 'month').toDate();
+        }
+        return startTime;
     }
 }

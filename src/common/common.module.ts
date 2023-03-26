@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import {LoggingInterceptor} from "./interceptors/logging.interceptor";
+import {APP_INTERCEPTOR} from "@nestjs/core";
 
-@Module({})
+@Module({providers: [
+    {provide: APP_INTERCEPTOR, useClass: LoggingInterceptor}]})
 export class CommonModule {}
