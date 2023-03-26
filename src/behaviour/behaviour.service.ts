@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {Model} from "mongoose";
 import {InjectModel} from "@nestjs/mongoose";
 import {Behaviour, BehaviourDocument} from "../schemas/behaviour.schema";
-import {CreateBehaviourDto, BehaviourRating} from "./dto/createBehaviourDto";
+import {CreateBehaviourDto} from "./dto/createBehaviourDto";
 import * as moment from "moment";
 import {UploaderService} from '../common';
 
@@ -40,7 +40,7 @@ export class BehaviourService {
 
     async uploadImage(behaviourId: string, file: Express.Multer.File) {
         let imageURL = await this.uploaderService.upload(file);
-        let update = await this.behaviourModel.updateOne({_id: behaviourId}, {imageURL: imageURL});
+        await this.behaviourModel.updateOne({_id: behaviourId}, {imageURL: imageURL});
         return imageURL;
     }
 
