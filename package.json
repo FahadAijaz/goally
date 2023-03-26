@@ -23,6 +23,7 @@
     "@aws-sdk/client-s3": "^3.299.0",
     "@aws-sdk/s3-request-presigner": "^3.299.0",
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
     "@nestjs/mongoose": "^9.2.2",
     "@nestjs/platform-express": "^9.0.0",
