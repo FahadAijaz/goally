@@ -22,3 +22,4 @@
 - [ ] Upgrading the aws sdk
 
 
+***NB: Please replace the sample.env with .env with the appropriate AWS credentials***
