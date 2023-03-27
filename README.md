@@ -14,7 +14,7 @@
 - [x] Postman collection added
 - [ ] Write Unit test case
 ## Other Areas That can be worked on
-- [ ] ** Implementing an async strategy for file upload. [See this.](https://jgefroh.medium.com/software-architecture-image-uploading-67997101a034)**
+- [ ] ***Implementing an async strategy for file upload. [See this.](https://jgefroh.medium.com/software-architecture-image-uploading-67997101a034)***
 - [ ] Creating a layer for serialization
 - [ ] Dockerizing the application
 - [ ] Creating a repository layer
