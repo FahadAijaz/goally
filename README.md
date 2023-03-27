@@ -12,6 +12,7 @@
 - [x] Get API must be paginated
 - [x] Code must be written in Typescript
 - [x] Postman collection added
+- [x] PATCH endpoint is idempotent
 - [ ] Write Unit test case
 ## Other Areas That can be worked on
 - [ ] ***Implementing an async strategy for file upload. [See this.](https://jgefroh.medium.com/software-architecture-image-uploading-67997101a034)***
